@@ -1,6 +1,7 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.Repository
 
 import android.util.Log
+import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.SerializeDataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource.Endpoint
 import pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource.NetworkUtils
@@ -9,32 +10,58 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SplashScreenRepository {
+    var dataPeopleList = ArrayList<DataPeople>()
+    lateinit var name : String
+    lateinit var height : String
+    lateinit var mass : String
+    lateinit var hair_color : String
+    lateinit var skin_color : String
+    lateinit var eye_color : String
+    lateinit var birth_year : String
+    lateinit var gender : String
+
     companion object{
         val sharedInstance = SplashScreenRepository()
     }
 
-    fun getDataInApi(onFinnish : (Boolean) -> Unit) {
+    fun getDataInApi(onFinnish : (List<DataPeople>)  -> Unit) {
         val retrofitClient = NetworkUtils.getRetrofitInstance()
         val endpoint = retrofitClient.create(Endpoint::class.java)
         val callDataOfPeople = endpoint.dataOfPeople()
+
+        //lista para guardar a informação do user
+        val list = ArrayList<DataPeople>()
 
         callDataOfPeople.enqueue(object : Callback<SerializeDataPeople?> {
             override fun onResponse(call: Call<SerializeDataPeople?>, response: Response<SerializeDataPeople?>) {
                 response.body().let{
                     val note: SerializeDataPeople? = it
-                    println("***************NAME: ${note?.results?.get(9)?.name}")
-                    println("***************GENDER: ${note?.results?.get(9)?.gender}")
 
-                    println("***************NAME: ${note?.results?.get(7)?.name}")
-                    println("***************GENDER: ${note?.results?.get(7)?.gender}")
+                    loop@ for (i in 0..9) {
+                        name = note?.results?.get(i)?.name.toString()
+                        height = note?.results?.get(i)?.height.toString()
+                        mass = note?.results?.get(i)?.mass.toString()
+                        hair_color = note?.results?.get(i)?.hair_color.toString()
+                        skin_color = note?.results?.get(i)?.skin_color.toString()
+                        eye_color = note?.results?.get(i)?.eye_color.toString()
+                        birth_year = note?.results?.get(i)?.birth_year.toString()
+                        gender = note?.results?.get(i)?.gender.toString()
+                        list.add(DataPeople(name, height, mass, hair_color, skin_color, eye_color, birth_year, gender))
+                    }
+
+                    dataPeopleList = list
+                    onFinnish(dataPeopleList)
                 }
-                onFinnish(true)
             }
 
             override fun onFailure(call: Call<SerializeDataPeople?>, t: Throwable) {
                 Log.e("onFailure error", t?.message)
-                onFinnish(false)
+                onFinnish(emptyList())
             }
         })
+    }
+
+    fun addDataPeople(dataPeople: DataPeople) {
+        dataPeopleList.add(dataPeople)
     }
 }

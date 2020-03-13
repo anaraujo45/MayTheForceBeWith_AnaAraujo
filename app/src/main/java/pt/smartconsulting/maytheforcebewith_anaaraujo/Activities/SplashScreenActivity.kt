@@ -31,6 +31,11 @@ class SplashScreenActivity : AppCompatActivity() {
         //iniciar ViewModel (este mandará ir buscar dados através do repository)
         splashScreenViewModel.init()
 
+        //submeter dados se já existir a lista
+        splashScreenViewModel.getPeopleLiveData()?.observe(this, Observer {
+            println("*********************      $it")
+        })
+
         //observar o estado da "busca" de dados
         splashScreenViewModel.getIsUpdatingLiveDataLoaded()?.observe(this, Observer{
             when(it){
