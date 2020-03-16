@@ -1,7 +1,8 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.Repository
 
 import android.util.Log
-import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.DataPeople
+import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
+import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeopleDao
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.SerializeDataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource.Endpoint
 import pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource.NetworkUtils
@@ -9,7 +10,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class SplashScreenRepository {
+    private lateinit var dataPeopleDao: DataPeopleDao
+
     var dataPeopleList = ArrayList<DataPeople>()
     lateinit var name : String
     lateinit var height : String
@@ -24,7 +28,8 @@ class SplashScreenRepository {
         val sharedInstance = SplashScreenRepository()
     }
 
-    fun getDataInApi(onFinnish : (List<DataPeople>)  -> Unit) {
+    //função responsável pelo serviço de obter dados da api
+    fun getDataInApi(onFinnish : (List<DataPeople>) -> Unit) {
         val retrofitClient = NetworkUtils.getRetrofitInstance()
         val endpoint = retrofitClient.create(Endpoint::class.java)
         val callDataOfPeople = endpoint.dataOfPeople()
@@ -46,9 +51,9 @@ class SplashScreenRepository {
                         eye_color = note?.results?.get(i)?.eye_color.toString()
                         birth_year = note?.results?.get(i)?.birth_year.toString()
                         gender = note?.results?.get(i)?.gender.toString()
-                        list.add(DataPeople(name, height, mass, hair_color, skin_color, eye_color, birth_year, gender))
-                    }
 
+                        list.add(DataPeople(i, name, height, mass, hair_color, skin_color, eye_color, birth_year, gender))
+                    }
                     dataPeopleList = list
                     onFinnish(dataPeopleList)
                 }
@@ -59,9 +64,5 @@ class SplashScreenRepository {
                 onFinnish(emptyList())
             }
         })
-    }
-
-    fun addDataPeople(dataPeople: DataPeople) {
-        dataPeopleList.add(dataPeople)
     }
 }

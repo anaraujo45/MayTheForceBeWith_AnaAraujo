@@ -3,6 +3,7 @@ package pt.smartconsulting.maytheforcebewith_anaaraujo.Model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+//responsável por receber os dados e serializa-los, utilização de Gson para isso
 class SerializeDataPeople {
     @SerializedName("count")
     @Expose
