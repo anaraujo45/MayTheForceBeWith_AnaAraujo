@@ -12,8 +12,6 @@ import retrofit2.Response
 
 
 class SplashScreenRepository {
-    private lateinit var dataPeopleDao: DataPeopleDao
-
     var dataPeopleList = ArrayList<DataPeople>()
     lateinit var name : String
     lateinit var height : String

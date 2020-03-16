@@ -10,7 +10,7 @@ import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.R
 
 class PeopleInStarWarsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-    private  var listDataPeople : List<DataPeople> = ArrayList()
+    var listDataPeople = ArrayList<DataPeople>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return PeopleViewHolder(
@@ -32,7 +32,7 @@ class PeopleInStarWarsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         }
     }
 
-    fun submitList(dataPeopleList: List<DataPeople>) {
+    fun submitList(dataPeopleList: ArrayList<DataPeople>) {
         this.listDataPeople = dataPeopleList
         notifyDataSetChanged()
     }

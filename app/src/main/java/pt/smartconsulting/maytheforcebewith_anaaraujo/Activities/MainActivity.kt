@@ -13,10 +13,9 @@ import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.R
 import pt.smartconsulting.maytheforcebewith_anaaraujo.ViewModel.MainViewModel
 
-class   MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var dataPeopleAdapter: PeopleInStarWarsAdapter
-    private val list = ArrayList<DataPeople>()
     private var peopleData = ArrayList<DataPeople>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,11 +36,10 @@ class   MainActivity : AppCompatActivity() {
         doAsync {
             //execute this line on a background thread
             peopleData = db.dataPeopleDao().getAll() as ArrayList<DataPeople>
+            dataPeopleAdapter.submitList(peopleData)
         }
 
-        println("************************** ${peopleData[9]}")
-
-        dataPeopleAdapter.submitList(peopleData)
+        println("************************** ${peopleData}")
         initRecyclerView()
     }
 
