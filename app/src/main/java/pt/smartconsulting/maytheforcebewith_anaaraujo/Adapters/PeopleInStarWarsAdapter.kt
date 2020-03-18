@@ -6,14 +6,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_item.view.*
+import pt.smartconsulting.maytheforcebewith_anaaraujo.Activities.MainActivity
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.R
 
-class PeopleInStarWarsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class PeopleInStarWarsAdapter(listDataPeople: ArrayList<DataPeople>, onNoteListener: OnNoteListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var listDataPeople = ArrayList<DataPeople>()
+    private lateinit var mOnNoteListener : OnNoteListener
+
+    fun PeopleInStarWarsAdapter(listDataPeople: ArrayList<DataPeople>, onNoteListener: OnNoteListener) {
+        this.listDataPeople = listDataPeople
+        mOnNoteListener = onNoteListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PeopleViewHolder(
+        return ViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.layout_list_item, parent,
                 false)
@@ -26,8 +33,8 @@ class PeopleInStarWarsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is PeopleViewHolder -> {
-                holder.bind(listDataPeople[position])
+            is ViewHolder -> {
+                holder.ViewHolder(listDataPeople[position], mOnNoteListener)
             }
         }
     }
@@ -37,13 +44,28 @@ class PeopleInStarWarsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         notifyDataSetChanged()
     }
 
-    class PeopleViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val textViewName : TextView = itemView.textView_name
+    class ViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        private val textViewName : TextView = itemView.textView_name
+        var onNoteListener: OnNoteListener? = null
 
-        fun bind(dataPeople: DataPeople) {
+        fun ViewHolder(dataPeople: DataPeople, onNoteListener: OnNoteListener) {
             val name = dataPeople.name
             this.textViewName.text = name
+            this.onNoteListener = onNoteListener
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            onNoteListener?.onNoteClick(adapterPosition)
         }
     }
-}
 
+    interface OnNoteListener {
+        fun onNoteClick(position: Int)
+    }
+
+    init {
+        this.listDataPeople = listDataPeople
+        mOnNoteListener = onNoteListener
+    }
+}
