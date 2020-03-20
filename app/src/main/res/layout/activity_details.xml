@@ -25,6 +25,7 @@
         app:layout_constraintVertical_bias="0.069" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="312dp"
         android:layout_height="254dp"
         android:gravity="center_vertical"
@@ -150,5 +151,33 @@
             app:layout_constraintVertical_bias="0.0" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton_clickAddFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clickAddFavorite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.64"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
+
+    <TextView
+        android:id="@+id/textView_addFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Favorite"
+        android:textColor="#000000"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.886"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_clickAddFavorite"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

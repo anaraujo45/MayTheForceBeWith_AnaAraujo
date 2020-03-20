@@ -14,17 +14,27 @@ import pt.smartconsulting.maytheforcebewith_anaaraujo.Repository.SplashScreenRep
 class DetailsViewModel : ViewModel() {
     private var repositoryDetailsRepository : DetailsRepository = DetailsRepository .sharedInstance
     private var mDetailsDataPeople: MutableLiveData<ArrayList<DataPeople>> = MutableLiveData()
+    private var mStateOfPost: MutableLiveData<Boolean> = MutableLiveData()
 
     fun init(context : Context){
         if (mDetailsDataPeople.value == null) {
             repositoryDetailsRepository.getDetails(context) { it ->
-                println("**********************  ${it[9]}")
                 mDetailsDataPeople.postValue(it)
             }
         }
     }
 
+    fun addFavorite(position : Int?){
+        repositoryDetailsRepository.postDetails(position) {
+            mStateOfPost.postValue(it)
+        }
+    }
+
     fun getDetails(): LiveData<ArrayList<DataPeople>>? {
         return mDetailsDataPeople
+    }
+
+    fun getStateOfPost(): LiveData<Boolean> {
+        return mStateOfPost
     }
 }

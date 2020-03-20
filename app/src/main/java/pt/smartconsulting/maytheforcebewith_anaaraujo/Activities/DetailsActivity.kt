@@ -25,7 +25,7 @@ class DetailsActivity : AppCompatActivity() {
             .getInstance(application)
             .create(DetailsViewModel::class.java)
 
-        val position : Int? = intent.extras?.getInt("Position")
+        val position = intent.extras?.getInt("Position")
         //iniciar ViewModel
         detailsViewModel.init(this)
 
@@ -47,6 +47,15 @@ class DetailsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Somethings is wrong!", Toast.LENGTH_SHORT).show()
             }
         })
+
+        detailsViewModel.getStateOfPost()?.observe(this, Observer{ it ->
+            if(it){
+                Toast.makeText(this, "Done, the Data was add in WebHook.", Toast.LENGTH_LONG).show()
+            }
+            else{
+                Toast.makeText(this, "Something is wrong, the Data wasn't add in WebHook.", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     //surgir a progressBar
@@ -57,5 +66,9 @@ class DetailsActivity : AppCompatActivity() {
     //remover a progressBar
     private fun hideProgressBar() {
         progressBar_waitingForData.visibility = View.GONE
+    }
+
+    fun clickAddFavorite(view: View) {
+        detailsViewModel.addFavorite(intent.extras?.getInt("Position"))
     }
 }
