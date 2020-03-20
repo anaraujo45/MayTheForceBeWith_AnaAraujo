@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import org.jetbrains.anko.doAsync
+import pt.smartconsulting.maytheforcebewith_anaaraujo.BuildConfig
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.AppDatabase
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeopleDao
@@ -68,11 +69,11 @@ class SplashScreenRepository {
     }
 
     fun importDataToDataBase(context : Context, listDataPeople : ArrayList<DataPeople>, onImport : (Boolean) -> Unit){
-        val db = Room.databaseBuilder(context, AppDatabase::class.java, "database-name").build()
+        val db = Room.databaseBuilder(context, AppDatabase::class.java, BuildConfig.DATABASE_NAME).build()
         //execute this line on a background thread
         doAsync {
             db.dataPeopleDao().insertAll(listDataPeople)
+            onImport(true)
         }
-        onImport(true)
     }
 }

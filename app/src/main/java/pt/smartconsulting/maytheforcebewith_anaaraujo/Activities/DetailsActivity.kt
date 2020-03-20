@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.activity_splash_screen.*
+import pt.smartconsulting.maytheforcebewith_anaaraujo.BuildConfig
 import pt.smartconsulting.maytheforcebewith_anaaraujo.R
 import pt.smartconsulting.maytheforcebewith_anaaraujo.ViewModel.DetailsViewModel
 
@@ -25,7 +26,7 @@ class DetailsActivity : AppCompatActivity() {
             .getInstance(application)
             .create(DetailsViewModel::class.java)
 
-        val position = intent.extras?.getInt("Position")
+        val position = intent.extras?.getInt(BuildConfig.POSITION)
         //iniciar ViewModel
         detailsViewModel.init(this)
 
@@ -69,6 +70,6 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     fun clickAddFavorite(view: View) {
-        detailsViewModel.addFavorite(intent.extras?.getInt("Position"))
+        detailsViewModel.addFavorite(intent.extras?.getInt(BuildConfig.POSITION))
     }
 }

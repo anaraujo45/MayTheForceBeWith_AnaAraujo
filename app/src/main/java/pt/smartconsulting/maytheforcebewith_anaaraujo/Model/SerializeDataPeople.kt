@@ -55,23 +55,6 @@ class Results {
     @Expose
     var homeworld: String? = null
 
-    /*
-    @SerializedName("films")
-    @Expose
-    var films: Array<Films?>? = null
-
-    @SerializedName("species")
-    @Expose
-    var species: Array<Species?>? = null
-
-    @SerializedName("vehicles")
-    @Expose
-    var vehicles: Array<Vehicles?>? = null
-
-    @SerializedName("starships")
-    @Expose
-    var starships: Array<Starships?>? = null
-    */
     @SerializedName("created")
     @Expose
     var created: String? = null
@@ -84,12 +67,3 @@ class Results {
     @Expose
     var url: String? = null
 }
-/*
-class Films {}
-
-class Species {}
-
-class Vehicles {}
-
-class Starships {}
- */

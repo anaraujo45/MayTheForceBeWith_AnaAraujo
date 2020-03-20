@@ -7,6 +7,12 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    // Load values from variables.properties file
+    def variablesPropertiesFile = rootProject.file("variables.properties")
+
+    def properties = new Properties()
+    properties.load(new FileInputStream(variablesPropertiesFile))
+
 
     defaultConfig {
         applicationId "pt.smartconsulting.maytheforcebewith_anaaraujo"
@@ -16,6 +22,12 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Create BuildConfig variables
+        buildConfigField "String", "POSITION", properties["POSITION"]
+        buildConfigField "String", "DATABASE_NAME", properties["DATABASE_NAME"]
+
+
     }
 
     buildTypes {

@@ -3,13 +3,11 @@ package pt.smartconsulting.maytheforcebewith_anaaraujo.Repository
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import okhttp3.Request
 import okhttp3.ResponseBody
 import org.jetbrains.anko.doAsync
-import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.PeopleDetails
+import pt.smartconsulting.maytheforcebewith_anaaraujo.BuildConfig
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.AppDatabase
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
-import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.SerializeDataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource.Endpoint
 import pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource.NetworkUtils
 import retrofit2.Call
@@ -24,7 +22,7 @@ class DetailsRepository{
     }
 
     fun getDetails(context : Context, onDetails : (ArrayList<DataPeople>) -> Unit){
-        db = Room.databaseBuilder(context, AppDatabase::class.java, "database-name").build()
+        db = Room.databaseBuilder(context, AppDatabase::class.java, BuildConfig.DATABASE_NAME).build()
         doAsync {
             totalList = db.dataPeopleDao().getAll() as ArrayList<DataPeople>
             onDetails(totalList)

@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 import org.jetbrains.anko.doAsync
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Adapters.PeopleInStarWarsAdapter
+import pt.smartconsulting.maytheforcebewith_anaaraujo.BuildConfig
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.AppDatabase
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.R
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), PeopleInStarWarsAdapter.OnNoteListener
         Log.d("Clicked!", "onNoteClick: $position")
 
         val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra("Position", position)
+        intent.putExtra(BuildConfig.POSITION, position)
         startActivity(intent)
     }
 

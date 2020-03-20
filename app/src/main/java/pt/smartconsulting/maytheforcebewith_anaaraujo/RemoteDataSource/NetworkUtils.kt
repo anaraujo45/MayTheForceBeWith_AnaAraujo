@@ -8,7 +8,7 @@ class NetworkUtils {
     companion object {  //simple singleton
         fun getRetrofitInstance(path : String) : Retrofit {
             return Retrofit.Builder()
-                .baseUrl(path) //https://swapi.co/api/
+                .baseUrl(path)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

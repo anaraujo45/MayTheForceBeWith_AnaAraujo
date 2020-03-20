@@ -1,7 +1,6 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.RemoteDataSource
 
 import okhttp3.ResponseBody
-import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.PeopleDetails
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.SerializeDataPeople
 import retrofit2.Call
