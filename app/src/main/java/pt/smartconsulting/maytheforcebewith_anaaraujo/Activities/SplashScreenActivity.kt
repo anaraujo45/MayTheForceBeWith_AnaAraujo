@@ -2,6 +2,7 @@ package pt.smartconsulting.maytheforcebewith_anaaraujo.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,23 +33,16 @@ class SplashScreenActivity : AppCompatActivity() {
             .create(SplashScreenViewModel::class.java)
 
         //iniciar ViewModel (este mandará ir buscar dados através do repository)
-        splashScreenViewModel.init()
+        splashScreenViewModel.init(this)
 
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database-name").build()
         //observar o estado da "busca" de dados
         splashScreenViewModel.getIsUpdatingLiveDataLoaded()?.observe(this, Observer{ it ->
             when(it){
                 SplashScreenViewModel.States.DONE ->{
-                    Toast.makeText(this, "Data is ready.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Data is ready.", Toast.LENGTH_SHORT).show()
 
-                    splashScreenViewModel.getPeopleLiveData()?.observe(this, Observer {
-                        //execute this line on a background thread
-                        doAsync {
-                            db.dataPeopleDao().insertAll(it)
-                        }
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                    })
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }
                 SplashScreenViewModel.States.LOAD ->{
                     Toast.makeText(this, "Loading data.", Toast.LENGTH_LONG).show()

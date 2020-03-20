@@ -1,5 +1,6 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.ViewModel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,7 @@ class SplashScreenViewModel : ViewModel(){
         DONE, LOAD, FAIL
     }
 
-    fun init(){
+    fun init(context : Context){
         //se a list com a informação da api for nula o currentState é colocado a load e é usado o serviço no repositorio para obter os dados
         if(mDataPeople.value ==null) {
             currentState.postValue(States.LOAD)
@@ -26,15 +27,17 @@ class SplashScreenViewModel : ViewModel(){
                 }
                 //se não é pq há dados e se pode submete-los e atualizar a currentState
                 else {
-                    mDataPeople.postValue(it)
-                    currentState.postValue(States.DONE)
+                    repositorySplashScreenRepository.importDataToDataBase(context, it){
+                        if(it){
+                            currentState.postValue(States.DONE)
+                        }
+                        else{
+                            currentState.postValue(States.FAIL)
+                        }
+                    }
                 }
             }
         }
-    }
-
-    fun getPeopleLiveData(): LiveData<List<DataPeople>>? {
-        return mDataPeople
     }
 
     fun getIsUpdatingLiveDataLoaded(): LiveData<States>? {

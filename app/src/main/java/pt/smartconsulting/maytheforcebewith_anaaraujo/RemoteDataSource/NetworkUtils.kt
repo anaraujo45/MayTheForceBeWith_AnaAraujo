@@ -6,9 +6,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 //class responsável pelo pedido à API e comurl base do serviço
 class NetworkUtils {
     companion object {  //simple singleton
-        fun getRetrofitInstance() : Retrofit {
+        fun getRetrofitInstance(path : String) : Retrofit {
             return Retrofit.Builder()
-                .baseUrl("https://swapi.co/api/") //https://swapi.co/api/people
+                .baseUrl(path) //https://swapi.co/api/
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }

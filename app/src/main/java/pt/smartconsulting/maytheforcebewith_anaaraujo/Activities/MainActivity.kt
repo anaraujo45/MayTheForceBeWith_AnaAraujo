@@ -1,11 +1,14 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.Activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,35 +18,50 @@ import pt.smartconsulting.maytheforcebewith_anaaraujo.Adapters.PeopleInStarWarsA
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.AppDatabase
 import pt.smartconsulting.maytheforcebewith_anaaraujo.Model.Room.DataPeople
 import pt.smartconsulting.maytheforcebewith_anaaraujo.R
+import pt.smartconsulting.maytheforcebewith_anaaraujo.ViewModel.MainViewModel
+import pt.smartconsulting.maytheforcebewith_anaaraujo.ViewModel.SplashScreenViewModel
 
 class MainActivity : AppCompatActivity(), PeopleInStarWarsAdapter.OnNoteListener {
-    private lateinit var dataPeopleAdapter: PeopleInStarWarsAdapter
+    private lateinit var mainViewModel: MainViewModel
     private var listDataPeople = ArrayList<DataPeople>()
+    private lateinit var dataPeopleAdapter: PeopleInStarWarsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = Room.databaseBuilder(this, AppDatabase::class.java, "database-name").build()
-        doAsync {
-            listDataPeople = db.dataPeopleDao().getAll() as ArrayList<DataPeople>
-            dataPeopleAdapter.submitList(listDataPeople)
-        }
+        showProgressBar()
+        //criação do viewModel associado à activity
+        mainViewModel = ViewModelProvider
+            .AndroidViewModelFactory
+            .getInstance(application)
+            .create(MainViewModel::class.java)
 
-        initRecyclerView()
+        //iniciar ViewModel
+        mainViewModel.init(this)
+
+        mainViewModel.getList().observe(this, Observer{ it ->
+            if(it != null){
+                hideProgressBar()
+                listDataPeople = it
+                dataPeopleAdapter.submitList(listDataPeople)
+            }
+            else{
+                Toast.makeText(this, "Something is wrong!", Toast.LENGTH_SHORT).show()
+            }
+        })
+        initRecyclerView(listDataPeople)
     }
 
-    private fun initRecyclerView() {
+    private fun initRecyclerView(listDataPeople : ArrayList<DataPeople>) {
         recycler_view.layoutManager = LinearLayoutManager(this)
         dataPeopleAdapter = PeopleInStarWarsAdapter(listDataPeople, this)
         recycler_view.adapter = dataPeopleAdapter
     }
 
-    override fun onNoteClick(position: Int) {
-        //i want the position in list here
+    override fun onNoteClick(position: Int){
         Log.d("Clicked!", "onNoteClick: $position")
 
-        showProgressBar()
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra("Position", position)
         startActivity(intent)
