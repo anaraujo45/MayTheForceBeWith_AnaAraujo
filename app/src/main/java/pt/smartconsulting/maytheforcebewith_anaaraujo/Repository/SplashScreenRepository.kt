@@ -17,22 +17,22 @@ import retrofit2.Response
 
 
 class SplashScreenRepository {
+    var dataPeopleList = ArrayList<DataPeople>()
+    lateinit var name : String
+    lateinit var height : String
+    lateinit var mass : String
+    lateinit var hair_color : String
+    lateinit var skin_color : String
+    lateinit var eye_color : String
+    lateinit var birth_year : String
+    lateinit var gender : String
+
     companion object{
         val sharedInstance = SplashScreenRepository()
     }
 
     //função responsável pelo serviço de obter dados da api
-    fun getDataInApi(onFinnish : (ArrayList<DataPeople>) -> Unit) {
-        var dataPeopleList = ArrayList<DataPeople>()
-        lateinit var name : String
-        lateinit var height : String
-        lateinit var mass : String
-        lateinit var hair_color : String
-        lateinit var skin_color : String
-        lateinit var eye_color : String
-        lateinit var birth_year : String
-        lateinit var gender : String
-
+    fun getDataInApi(onFinnish : (Boolean) -> Unit) {
         val retrofitClient = NetworkUtils.getRetrofitInstance("https://swapi.co/api/")
         val endpoint = retrofitClient.create(Endpoint::class.java)
         val callDataOfPeople = endpoint.dataOfPeople()
@@ -58,22 +58,23 @@ class SplashScreenRepository {
                         list.add(DataPeople(i, name, height, mass, hair_color, skin_color, eye_color, birth_year, gender))
                     }
                     dataPeopleList = list
-                    onFinnish(dataPeopleList)
+                    onFinnish(true)
                 }
             }
 
             override fun onFailure(call: Call<SerializeDataPeople?>, t: Throwable) {
                 Log.e("onFailure error", t.message)
+                onFinnish(false)
             }
         })
     }
 
-    fun importDataToDataBase(context : Context, listDataPeople : ArrayList<DataPeople>, onImport : (Boolean) -> Unit){
+    fun importDataToDataBase(context : Context, onImport : (Boolean) -> Unit){
         val db = Room.databaseBuilder(context, AppDatabase::class.java, BuildConfig.DATABASE_NAME).build()
         //execute this line on a background thread
         doAsync {
-            db.dataPeopleDao().insertAll(listDataPeople)
-            onImport(true)
+            db.dataPeopleDao().insertAll(dataPeopleList)
         }
+        onImport(true)
     }
 }

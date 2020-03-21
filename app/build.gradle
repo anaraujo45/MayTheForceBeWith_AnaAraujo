@@ -13,7 +13,6 @@ android {
     def properties = new Properties()
     properties.load(new FileInputStream(variablesPropertiesFile))
 
-
     defaultConfig {
         applicationId "pt.smartconsulting.maytheforcebewith_anaaraujo"
         minSdkVersion 15

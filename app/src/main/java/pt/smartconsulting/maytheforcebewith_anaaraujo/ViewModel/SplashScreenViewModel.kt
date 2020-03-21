@@ -17,24 +17,25 @@ class SplashScreenViewModel : ViewModel(){
     }
 
     fun init(context : Context){
+        currentState.postValue(States.LOAD)
+
         //se a list com a informação da api for nula o currentState é colocado a load e é usado o serviço no repositorio para obter os dados
         if(mDataPeople.value ==null) {
-            currentState.postValue(States.LOAD)
             repositorySplashScreenRepository.getDataInApi {
-                //Se a lista (it) estiver a null significa que não há dados e algo correu mal
-                if (it == null) {
-                    currentState.postValue(States.FAIL)
-                }
-                //se não é pq há dados e se pode submete-los e atualizar a currentState
-                else {
-                    repositorySplashScreenRepository.importDataToDataBase(context, it){
-                        if(it){
+                //se é true, é pq há dados e se pode submete-los e atualizar a currentState
+                if (it) {
+                    repositorySplashScreenRepository.importDataToDataBase(context){note ->
+                        if(note){
                             currentState.postValue(States.DONE)
                         }
                         else{
                             currentState.postValue(States.FAIL)
                         }
                     }
+                }
+                //Se for false, significa que não há dados e algo correu mal
+                else {
+                    currentState.postValue(States.FAIL)
                 }
             }
         }
