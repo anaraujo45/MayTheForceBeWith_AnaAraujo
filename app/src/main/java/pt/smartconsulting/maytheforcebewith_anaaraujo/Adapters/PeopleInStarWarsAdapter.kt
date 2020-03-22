@@ -29,7 +29,7 @@ class PeopleInStarWarsAdapter(listDataPeople: ArrayList<DataPeople>, onNoteListe
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                holder.ViewHolder(listDataPeople[position], mOnNoteListener)
+                holder.ViewHolder(listDataPeople[position], mOnNoteListener, listDataPeople[position].id)
             }
         }
     }
@@ -42,16 +42,18 @@ class PeopleInStarWarsAdapter(listDataPeople: ArrayList<DataPeople>, onNoteListe
     class ViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val textViewName : TextView = itemView.textView_name
         var onNoteListener: OnNoteListener? = null
+        var id : Int? = 999
 
-        fun ViewHolder(dataPeople: DataPeople, onNoteListener: OnNoteListener) {
+        fun ViewHolder(dataPeople: DataPeople, onNoteListener: OnNoteListener, id : Int) {
             val name = dataPeople.name
             this.textViewName.text = name
             this.onNoteListener = onNoteListener
+            this.id = id
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            onNoteListener?.onNoteClick(adapterPosition)
+            id?.let { onNoteListener?.onNoteClick(it) }
         }
     }
 
