@@ -25,8 +25,7 @@ android {
         // Create BuildConfig variables
         buildConfigField "String", "POSITION", properties["POSITION"]
         buildConfigField "String", "DATABASE_NAME", properties["DATABASE_NAME"]
-
-
+        buildConfigField "String", "POSITION_MATCH", properties["POSITION_MATCH"]
     }
 
     buildTypes {

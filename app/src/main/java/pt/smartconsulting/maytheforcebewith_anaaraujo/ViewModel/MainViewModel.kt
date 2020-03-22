@@ -11,10 +11,22 @@ import pt.smartconsulting.maytheforcebewith_anaaraujo.Repository.SplashScreenRep
 class MainViewModel : ViewModel() {
     private var repositoryMainRepository : MainRepository = MainRepository.sharedInstance
     private var mDataPeopleList: MutableLiveData<ArrayList<DataPeople>> = MutableLiveData()
+    private var mDataPeopleListWithMatch: MutableLiveData<ArrayList<DataPeople>> = MutableLiveData()
 
     fun init(context : Context){
         repositoryMainRepository.getList(context) {
-            if(it!=null){
+            if(it.size != 0){
+                mDataPeopleList.postValue(it)
+            }
+            else{
+                mDataPeopleList.postValue(null)
+            }
+        }
+    }
+
+    fun checkMatch(word : String, context : Context){
+        repositoryMainRepository.getMatch(word, context){
+            if(it.size != 0){
                 mDataPeopleList.postValue(it)
             }
             else{

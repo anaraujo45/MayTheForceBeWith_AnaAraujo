@@ -1,12 +1,16 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.Activities
 
+import android.app.Activity
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +55,7 @@ class MainActivity : AppCompatActivity(), PeopleInStarWarsAdapter.OnNoteListener
                 Toast.makeText(this, "Something is wrong!", Toast.LENGTH_SHORT).show()
             }
         })
+
         initRecyclerView(listDataPeople)
     }
 
@@ -66,6 +71,33 @@ class MainActivity : AppCompatActivity(), PeopleInStarWarsAdapter.OnNoteListener
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra(BuildConfig.POSITION, position)
         startActivity(intent)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+
+        val manager =  getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchItem = menu?.findItem(R.id.search)
+        val searchView = searchItem?.actionView as SearchView
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchView.clearFocus()
+                searchView.setQuery("", false)
+                searchItem.collapseActionView()
+
+                Log.v("Information", "Looking for $query")
+                mainViewModel.checkMatch(query, this@MainActivity)
+                return true
+            }
+            override fun onQueryTextChange(newText: String): Boolean {
+                Log.v("Information", "$newText")
+                return false
+            }
+        })
+
+        return true
     }
 
     //surgir a progressBar

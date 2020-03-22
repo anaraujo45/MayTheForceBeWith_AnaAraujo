@@ -12,12 +12,7 @@ import pt.smartconsulting.maytheforcebewith_anaaraujo.R
 
 class PeopleInStarWarsAdapter(listDataPeople: ArrayList<DataPeople>, onNoteListener: OnNoteListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var listDataPeople = ArrayList<DataPeople>()
-    private lateinit var mOnNoteListener : OnNoteListener
-
-    fun PeopleInStarWarsAdapter(listDataPeople: ArrayList<DataPeople>, onNoteListener: OnNoteListener) {
-        this.listDataPeople = listDataPeople
-        mOnNoteListener = onNoteListener
-    }
+    private var mOnNoteListener : OnNoteListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(

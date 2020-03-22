@@ -1,5 +1,6 @@
 package pt.smartconsulting.maytheforcebewith_anaaraujo.Activities
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -27,6 +28,7 @@ class DetailsActivity : AppCompatActivity() {
             .create(DetailsViewModel::class.java)
 
         val position = intent.extras?.getInt(BuildConfig.POSITION)
+
         //iniciar ViewModel
         detailsViewModel.init(this)
 

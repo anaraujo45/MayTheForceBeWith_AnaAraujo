@@ -11,4 +11,8 @@ interface DataPeopleDao {
 
     @Insert
     fun insertAll(dataPeople:List<DataPeople>)
+
+    //para encontrar o match
+    @Query("SELECT * FROM DataPeople WHERE name = :search")
+    fun searchWord(search: String): List<DataPeople>
 }
